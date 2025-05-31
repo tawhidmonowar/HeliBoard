@@ -143,8 +143,8 @@ class InputLogicTest {
     @Test fun insertLetterIntoWordHangul() {
         if (BuildConfig.BUILD_TYPE == "runTests") return
         reset()
+        latinIME.switchToSubtype(SubtypeSettings.getResourceSubtypesForLocale("ko".constructLocale()).first())
         currentScript = ScriptUtils.SCRIPT_HANGUL // todo: maybe we don't need the script any more now?
-        SubtypeSettings.setSelectedSubtype(latinIME.prefs(), SubtypeSettings.getResourceSubtypesForLocale("ko".constructLocale()).first())
         chainInput("ㅛㅎㄹㅎㅕㅛ")
         setCursorPosition(3)
         input('ㄲ') // fails, as expected from the hangul issue when processing the event in onCodeInput
@@ -158,8 +158,8 @@ class InputLogicTest {
     // see issue 1447
     @Test fun separatorAfterHangul() {
         reset()
+        latinIME.switchToSubtype(SubtypeSettings.getResourceSubtypesForLocale("ko".constructLocale()).first())
         currentScript = ScriptUtils.SCRIPT_HANGUL
-        SubtypeSettings.setSelectedSubtype(latinIME.prefs(), SubtypeSettings.getResourceSubtypesForLocale("ko".constructLocale()).first())
         chainInput("ㅛ.")
         assertEquals("ㅛ.", text)
     }
@@ -167,8 +167,8 @@ class InputLogicTest {
     // see issue 1551 (debug only)
     @Test fun deleteHangul() {
         reset()
+        latinIME.switchToSubtype(SubtypeSettings.getResourceSubtypesForLocale("ko".constructLocale()).first())
         currentScript = ScriptUtils.SCRIPT_HANGUL
-        SubtypeSettings.setSelectedSubtype(latinIME.prefs(), SubtypeSettings.getResourceSubtypesForLocale("ko".constructLocale()).first())
         setText("ㅛㅛ ")
         functionalKeyPress(KeyCode.DELETE)
         functionalKeyPress(KeyCode.DELETE)
