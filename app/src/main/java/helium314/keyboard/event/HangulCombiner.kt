@@ -16,6 +16,9 @@ class HangulCombiner : Combiner {
 
     override fun processEvent(previousEvents: ArrayList<Event>?, event: Event): Event {
         if (event.mKeyCode == KeyCode.SHIFT) return event
+        // todo: need to do nothing in other cases too?
+        //  previously we had codePoint > 0x1100 or codePoint == -1
+        val event = HangulEventDecoder.decodeSoftwareKeyEvent(event)
         if (Character.isWhitespace(event.mCodePoint)) {
             val text = combiningStateFeedback
             reset()

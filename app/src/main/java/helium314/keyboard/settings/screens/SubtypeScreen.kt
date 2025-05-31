@@ -91,6 +91,7 @@ import helium314.keyboard.settings.layoutIntent
 import helium314.keyboard.settings.previewDark
 import java.util.Locale
 
+// todo: make sure combiner value is copied / created when necessary
 @Composable
 fun SubtypeScreen(
     initialSubtype: SettingsSubtype,
