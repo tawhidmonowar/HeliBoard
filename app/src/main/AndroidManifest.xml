@@ -1,59 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-Copyright (C) 2012 The Android Open Source Project
-modified
-SPDX-License-Identifier: Apache-2.0 AND GPL-3.0-only
--->
-
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_USER_DICTIONARY" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_USER_DICTIONARY" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
-    <application android:label="@string/english_ime_name"
-            android:name="helium314.keyboard.latin.App"
-            android:icon="@mipmap/ic_launcher"
-            android:roundIcon="@mipmap/ic_launcher_round"
-            android:supportsRtl="true"
-            android:allowBackup="true"
-            android:defaultToDeviceProtectedStorage="true"
-            android:directBootAware="true"
-            tools:remove="android:appComponentFactory"
-            tools:targetApi="p">
+    <application
+        android:name="helium314.keyboard.latin.App"
+        android:allowBackup="true"
+        android:defaultToDeviceProtectedStorage="true"
+        android:directBootAware="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/english_ime_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        tools:remove="android:appComponentFactory"
+        tools:targetApi="p">
 
         <!-- Services -->
-        <service android:name="LatinIME"
-                android:label="@string/english_ime_name"
-                android:permission="android.permission.BIND_INPUT_METHOD"
-                android:directBootAware="true"
-                android:exported="true">
+        <service
+            android:name="LatinIME"
+            android:directBootAware="true"
+            android:exported="true"
+            android:label="@string/english_ime_name"
+            android:permission="android.permission.BIND_INPUT_METHOD">
             <intent-filter>
                 <action android:name="android.view.InputMethod" />
             </intent-filter>
-            <meta-data android:name="android.view.im" android:resource="@xml/method_dummy" />
+            <meta-data
+                android:name="android.view.im"
+                android:resource="@xml/method_dummy" />
         </service>
 
-        <service android:name=".spellcheck.AndroidSpellCheckerService"
-                 android:label="@string/spell_checker_service_name"
-                 android:permission="android.permission.BIND_TEXT_SERVICE"
-                 android:exported="true">
+        <service
+            android:name=".spellcheck.AndroidSpellCheckerService"
+            android:exported="true"
+            android:label="@string/spell_checker_service_name"
+            android:permission="android.permission.BIND_TEXT_SERVICE">
             <intent-filter>
                 <action android:name="android.service.textservice.SpellCheckerService" />
             </intent-filter>
-            <meta-data android:name="android.view.textservice.scs"
-                    android:resource="@xml/spellchecker" />
+            <meta-data
+                android:name="android.view.textservice.scs"
+                android:resource="@xml/spellchecker" />
         </service>
 
         <!-- Activities -->
-        <activity android:name="helium314.keyboard.settings.SettingsActivity"
-                android:theme="@style/platformActivityTheme"
-                android:icon="@mipmap/ic_launcher"
-                android:windowSoftInputMode="adjustResize"
-                android:exported="true">
+        <activity
+            android:name="helium314.keyboard.settings.SettingsActivity"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher"
+            android:theme="@style/platformActivityTheme"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -61,32 +63,41 @@ SPDX-License-Identifier: Apache-2.0 AND GPL-3.0-only
         </activity>
 
         <!-- separate activity that's used internally, only necessary in case the launcher icon is disabled on Android < 10 -->
-        <activity android:name="helium314.keyboard.settings.SettingsActivity2"
-            android:theme="@style/platformActivityTheme"
+        <activity
+            android:name="helium314.keyboard.settings.SettingsActivity2"
+            android:exported="true"
             android:icon="@mipmap/ic_launcher"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="true">
+            android:theme="@style/platformActivityTheme"
+            android:windowSoftInputMode="adjustResize">
             <!-- intent filter for opening .dict files -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:mimeType="application/octet-stream" android:scheme="content" android:host="*" android:pathPattern=".*\\.dict" />
+
+                <data
+                    android:host="*"
+                    android:mimeType="application/octet-stream"
+                    android:pathPattern=".*\\.dict"
+                    android:scheme="content" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".spellcheck.SpellCheckerSettingsActivity"
-                android:theme="@style/platformActivityTheme"
-                android:label="@string/spell_checker_service_name"
-                android:exported="true">
+        <activity
+            android:name=".spellcheck.SpellCheckerSettingsActivity"
+            android:exported="true"
+            android:label="@string/spell_checker_service_name"
+            android:theme="@style/platformActivityTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
 
         <!-- Broadcast receivers -->
-        <receiver android:name="SystemBroadcastReceiver"
-                android:exported="true">
+        <receiver
+            android:name="SystemBroadcastReceiver"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -95,7 +106,9 @@ SPDX-License-Identifier: Apache-2.0 AND GPL-3.0-only
             </intent-filter>
         </receiver>
 
-        <receiver android:name="DictionaryPackInstallBroadcastReceiver" android:exported="false">
+        <receiver
+            android:name="DictionaryPackInstallBroadcastReceiver"
+            android:exported="false">
             <intent-filter>
                 <action android:name="helium314.keyboard.dictionarypack.aosp.UNKNOWN_CLIENT" />
             </intent-filter>

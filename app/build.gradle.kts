@@ -1,3 +1,7 @@
+import java.io.FileInputStream
+import java.util.Properties
+import kotlin.apply
+
 plugins {
     id("com.android.application")
     kotlin("android")
@@ -19,6 +23,32 @@ android {
             abiFilters.addAll(listOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64"))
         }
         proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+
+        val properties = Properties().apply {
+            val localPropertiesFile = rootProject.file("local.properties")
+            if (localPropertiesFile.exists()) {
+                load(FileInputStream(localPropertiesFile))
+            }
+        }
+
+        val apiKey = properties.getProperty("API_KEY")
+            ?: throw GradleException("Add 'API_KEY' field in the local.properties file.")
+
+        val tenorApiKey = properties.getProperty("TENOR_API_KEY")
+            ?: throw GradleException("Add 'TENOR_API_KEY' field in the local.properties file.")
+
+
+        buildConfigField(
+            "String",
+            "API_KEY",
+            "\"" + apiKey + "\""
+        )
+
+        buildConfigField(
+            "String",
+            "TENOR_API_KEY",
+            "\"" + tenorApiKey + "\""
+        )
     }
 
     buildTypes {
@@ -129,4 +159,15 @@ dependencies {
     testImplementation("org.robolectric:robolectric:4.16")
     testImplementation("androidx.test:runner:1.7.0")
     testImplementation("androidx.test:core:1.7.0")
+
+    // Koin for Dependency Injection
+    implementation("io.insert-koin:koin-android:4.1.1")
+    implementation("io.insert-koin:koin-core:4.1.1")
+
+    // Ktor for Networking
+    implementation("io.ktor:ktor-client-core:3.3.1")
+    implementation("io.ktor:ktor-client-okhttp:3.3.1")
+    implementation("io.ktor:ktor-client-logging:3.3.1")
+    implementation("io.ktor:ktor-client-content-negotiation:3.3.1")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:3.3.1")
 }

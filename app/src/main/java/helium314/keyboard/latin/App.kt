@@ -4,6 +4,7 @@ package helium314.keyboard.latin
 import android.app.Application
 import android.content.Context
 import androidx.core.content.edit
+import helium314.keyboard.core.di.appModules
 import helium314.keyboard.keyboard.ColorSetting
 import helium314.keyboard.keyboard.KeyboardTheme
 import helium314.keyboard.keyboard.emoji.SupportedEmojis
@@ -39,6 +40,10 @@ import helium314.keyboard.latin.utils.prefs
 import helium314.keyboard.latin.utils.upgradeToolbarPrefs
 import helium314.keyboard.latin.utils.writeCustomKeyCodes
 import helium314.keyboard.settings.screens.colorPrefsAndResIds
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.GlobalContext.startKoin
+import org.koin.core.logger.Level
 import java.io.File
 import java.util.EnumMap
 
@@ -49,6 +54,13 @@ class App : Application() {
         Settings.init(this)
         SubtypeSettings.init(this)
         RichInputMethodManager.init(this)
+
+        // Init koin
+        startKoin {
+            androidLogger(Level.ERROR)
+            androidContext(this@App)
+            modules(appModules)
+        }
 
         checkVersionUpgrade(this)
         app = this
@@ -231,7 +243,7 @@ fun checkVersionUpgrade(context: Context) {
             prefs.edit().remove(pref).remove(pref + "_auto").apply()
             result
         }
-        if (colorsNight.any { it.color!= null }) {
+        if (colorsNight.any { it.color != null }) {
             KeyboardTheme.writeUserColors(prefs, themeNameNight, colorsNight)
         }
         if (prefs.contains("theme_dark_color_show_more_colors")) {
@@ -250,22 +262,27 @@ fun checkVersionUpgrade(context: Context) {
     if (oldVersion <= 2302) {
         fun readCustomKeyCodes(setting: String) =
             prefs.getString(setting, "")!!
-                .split(";").filter { it.isNotEmpty()}.associate {
+                .split(";").filter { it.isNotEmpty() }.associate {
                     val code = runCatching { it.substringAfter(",").toIntOrNull()?.checkAndConvertCode() }.getOrNull()
                     it.substringBefore(",") to code
                 }
+
         val customCodes = readCustomKeyCodes("toolbar_custom_key_codes")
         val customLongpressCodes = readCustomKeyCodes("toolbar_custom_longpress_codes")
         prefs.edit().remove("toolbar_custom_longpress_codes").remove("toolbar_custom_key_codes").apply()
         val combined = EnumMap<ToolbarKey, Pair<Int?, Int?>>(ToolbarKey::class.java)
-        customCodes.forEach { runCatching {
-            val key = ToolbarKey.valueOf(it.key)
-            combined[key] = (combined[key] ?: (null to null)).copy(first = it.value)
-        } }
-        customLongpressCodes.forEach { runCatching {
-            val key = ToolbarKey.valueOf(it.key)
-            combined[key] = (combined[key] ?: (null to null)).copy(second = it.value)
-        } }
+        customCodes.forEach {
+            runCatching {
+                val key = ToolbarKey.valueOf(it.key)
+                combined[key] = (combined[key] ?: (null to null)).copy(first = it.value)
+            }
+        }
+        customLongpressCodes.forEach {
+            runCatching {
+                val key = ToolbarKey.valueOf(it.key)
+                combined[key] = (combined[key] ?: (null to null)).copy(second = it.value)
+            }
+        }
         writeCustomKeyCodes(prefs, combined)
     }
     if (oldVersion <= 2303) {
@@ -280,6 +297,7 @@ fun checkVersionUpgrade(context: Context) {
                     file.renameTo(File(dir, name))
                     prefs.edit().putString(Settings.PREF_LAYOUT_PREFIX + LayoutType.SYMBOLS.name, name).apply()
                 }
+
                 "custom.symbols_shifted." -> {
                     val dir = File(folder, LayoutType.MORE_SYMBOLS.folder)
                     dir.mkdirs()
@@ -287,12 +305,14 @@ fun checkVersionUpgrade(context: Context) {
                     file.renameTo(File(dir, name))
                     prefs.edit().putString(Settings.PREF_LAYOUT_PREFIX + LayoutType.MORE_SYMBOLS.name, name).apply()
                 }
+
                 "custom.symbols_arabic." -> {
                     val dir = File(folder, LayoutType.SYMBOLS.folder)
                     dir.mkdirs()
                     val name = "custom.${encodeBase36("symbols_arabic")}."
                     file.renameTo(File(dir, name))
                 }
+
                 "custom.numpad." -> {
                     val dir = File(folder, LayoutType.NUMPAD.folder)
                     dir.mkdirs()
@@ -300,6 +320,7 @@ fun checkVersionUpgrade(context: Context) {
                     file.renameTo(File(dir, name))
                     prefs.edit().putString(Settings.PREF_LAYOUT_PREFIX + LayoutType.NUMPAD.name, name).apply()
                 }
+
                 "custom.numpad_landscape." -> {
                     val dir = File(folder, LayoutType.NUMPAD_LANDSCAPE.folder)
                     dir.mkdirs()
@@ -307,6 +328,7 @@ fun checkVersionUpgrade(context: Context) {
                     file.renameTo(File(dir, name))
                     prefs.edit().putString(Settings.PREF_LAYOUT_PREFIX + LayoutType.NUMPAD_LANDSCAPE.name, name).apply()
                 }
+
                 "custom.number." -> {
                     val dir = File(folder, LayoutType.NUMBER.folder)
                     dir.mkdirs()
@@ -314,6 +336,7 @@ fun checkVersionUpgrade(context: Context) {
                     file.renameTo(File(dir, name))
                     prefs.edit().putString(Settings.PREF_LAYOUT_PREFIX + LayoutType.NUMBER.name, name).apply()
                 }
+
                 "custom.phone." -> {
                     val dir = File(folder, LayoutType.PHONE.folder)
                     dir.mkdirs()
@@ -321,6 +344,7 @@ fun checkVersionUpgrade(context: Context) {
                     file.renameTo(File(dir, name))
                     prefs.edit().putString(Settings.PREF_LAYOUT_PREFIX + LayoutType.PHONE.name, name).apply()
                 }
+
                 "custom.phone_symbols." -> {
                     val dir = File(folder, LayoutType.PHONE_SYMBOLS.folder)
                     dir.mkdirs()
@@ -328,6 +352,7 @@ fun checkVersionUpgrade(context: Context) {
                     file.renameTo(File(dir, name))
                     prefs.edit().putString(Settings.PREF_LAYOUT_PREFIX + LayoutType.PHONE_SYMBOLS.name, name).apply()
                 }
+
                 "custom.number_row." -> {
                     val dir = File(folder, LayoutType.NUMBER_ROW.folder)
                     dir.mkdirs()
@@ -335,6 +360,7 @@ fun checkVersionUpgrade(context: Context) {
                     file.renameTo(File(dir, name))
                     prefs.edit().putString(Settings.PREF_LAYOUT_PREFIX + LayoutType.NUMBER_ROW.name, name).apply()
                 }
+
                 "custom.emoji_bottom_row." -> {
                     val dir = File(folder, LayoutType.EMOJI_BOTTOM.folder)
                     dir.mkdirs()
@@ -342,6 +368,7 @@ fun checkVersionUpgrade(context: Context) {
                     file.renameTo(File(dir, name))
                     prefs.edit().putString(Settings.PREF_LAYOUT_PREFIX + LayoutType.EMOJI_BOTTOM.name, name).apply()
                 }
+
                 "custom.clip_bottom_row." -> {
                     val dir = File(folder, LayoutType.CLIPBOARD_BOTTOM.folder)
                     dir.mkdirs()
@@ -349,6 +376,7 @@ fun checkVersionUpgrade(context: Context) {
                     file.renameTo(File(dir, name))
                     prefs.edit().putString(Settings.PREF_LAYOUT_PREFIX + LayoutType.CLIPBOARD_BOTTOM.name, name).apply()
                 }
+
                 "custom.functional_keys." -> {
                     val dir = File(folder, LayoutType.FUNCTIONAL.folder)
                     dir.mkdirs()
@@ -356,18 +384,21 @@ fun checkVersionUpgrade(context: Context) {
                     file.renameTo(File(dir, name))
                     prefs.edit().putString(Settings.PREF_LAYOUT_PREFIX + LayoutType.FUNCTIONAL.name, name).apply()
                 }
+
                 "custom.functional_keys_symbols." -> {
                     val dir = File(folder, LayoutType.FUNCTIONAL.folder)
                     dir.mkdirs()
                     val name = "custom.${encodeBase36("functional_keys_symbols")}."
                     file.renameTo(File(dir, name))
                 }
+
                 "custom.functional_keys_symbols_shifted." -> {
                     val dir = File(folder, LayoutType.FUNCTIONAL.folder)
                     dir.mkdirs()
                     val name = "custom.${encodeBase36("functional_keys_symbols_shifted")}."
                     file.renameTo(File(dir, name))
                 }
+
                 else -> {
                     // main layouts
                     val dir = File(folder, LayoutType.MAIN.folder)
@@ -377,8 +408,10 @@ fun checkVersionUpgrade(context: Context) {
             }
         }
         if (prefs.contains(Settings.PREF_ADDITIONAL_SUBTYPES))
-            prefs.edit().putString(Settings.PREF_ADDITIONAL_SUBTYPES, prefs.getString(Settings.PREF_ADDITIONAL_SUBTYPES, "")!!
-                .replace(":", Separators.SET)).apply()
+            prefs.edit().putString(
+                Settings.PREF_ADDITIONAL_SUBTYPES, prefs.getString(Settings.PREF_ADDITIONAL_SUBTYPES, "")!!
+                    .replace(":", Separators.SET)
+            ).apply()
     }
     if (oldVersion <= 2304) {
         // rename layout files for latin scripts, and adjust layouts stored in prefs accordingly
@@ -404,7 +437,7 @@ fun checkVersionUpgrade(context: Context) {
     }
     if (oldVersion <= 2305) {
         (prefs.all.keys.filter { it.startsWith(Settings.PREF_POPUP_KEYS_ORDER) || it.startsWith(Settings.PREF_POPUP_KEYS_LABELS_ORDER) } +
-                listOf(Settings.PREF_TOOLBAR_KEYS, Settings.PREF_PINNED_TOOLBAR_KEYS, Settings.PREF_CLIPBOARD_TOOLBAR_KEYS)).forEach {
+            listOf(Settings.PREF_TOOLBAR_KEYS, Settings.PREF_PINNED_TOOLBAR_KEYS, Settings.PREF_CLIPBOARD_TOOLBAR_KEYS)).forEach {
             if (!prefs.contains(it)) return@forEach
             val newValue = prefs.getString(it, "")!!.replace(",", Separators.KV).replace(";", Separators.ENTRY)
             prefs.edit().putString(it, newValue).apply()
@@ -422,17 +455,18 @@ fun checkVersionUpgrade(context: Context) {
     if (oldVersion <= 2306) {
         // upgrade additional, enabled, and selected subtypes to same format of locale and (filtered) extra value
         if (prefs.contains(Settings.PREF_ADDITIONAL_SUBTYPES)) {
-            val new = prefs.getString(Settings.PREF_ADDITIONAL_SUBTYPES, "")!!.split(Separators.SETS).filter { it.isNotEmpty() }.mapNotNull { pref ->
-                val oldSplit = pref.split(Separators.SET)
-                if (oldSplit.size < 3) return@mapNotNull null
-                val languageTag = oldSplit[0]
-                val mainLayoutName = oldSplit[1]
-                val extraValue = oldSplit[2]
-                SettingsSubtype(
-                    languageTag.constructLocale(),
-                    ExtraValue.KEYBOARD_LAYOUT_SET + "=MAIN" + Separators.KV + mainLayoutName + "," + extraValue
-                ).toAdditionalSubtype()?.let { it.toSettingsSubtype().toPref() }
-            }.joinToString(Separators.SETS)
+            val new = prefs.getString(Settings.PREF_ADDITIONAL_SUBTYPES, "")!!.split(Separators.SETS).filter { it.isNotEmpty() }
+                .mapNotNull { pref ->
+                    val oldSplit = pref.split(Separators.SET)
+                    if (oldSplit.size < 3) return@mapNotNull null
+                    val languageTag = oldSplit[0]
+                    val mainLayoutName = oldSplit[1]
+                    val extraValue = oldSplit[2]
+                    SettingsSubtype(
+                        languageTag.constructLocale(),
+                        ExtraValue.KEYBOARD_LAYOUT_SET + "=MAIN" + Separators.KV + mainLayoutName + "," + extraValue
+                    ).toAdditionalSubtype()?.let { it.toSettingsSubtype().toPref() }
+                }.joinToString(Separators.SETS)
             prefs.edit().putString(Settings.PREF_ADDITIONAL_SUBTYPES, new).apply()
         }
         listOf(Settings.PREF_ENABLED_SUBTYPES, Settings.PREF_SELECTED_SUBTYPE).forEach { key ->
@@ -481,8 +515,8 @@ fun checkVersionUpgrade(context: Context) {
     if (oldVersion <= 2308) {
         SubtypeSettings.reloadEnabledSubtypes(context)
         prefs.all.keys.toList().forEach { key ->
-            if (key.startsWith(Settings.PREF_POPUP_KEYS_ORDER+"_")) {
-                val locale = key.substringAfter(Settings.PREF_POPUP_KEYS_ORDER+"_").constructLocale()
+            if (key.startsWith(Settings.PREF_POPUP_KEYS_ORDER + "_")) {
+                val locale = key.substringAfter(Settings.PREF_POPUP_KEYS_ORDER + "_").constructLocale()
                 SubtypeSettings.getEnabledSubtypes().forEach {
                     if (it.locale() == locale && !SubtypeSettings.isAdditionalSubtype(it)) {
                         SubtypeUtilsAdditional.changeAdditionalSubtype(it.toSettingsSubtype(), it.toSettingsSubtype(), context)
@@ -497,8 +531,8 @@ fun checkVersionUpgrade(context: Context) {
                 }
                 prefs.edit().remove(key).apply()
             }
-            if (key.startsWith(Settings.PREF_POPUP_KEYS_LABELS_ORDER+"_")) {
-                val locale = key.substringAfter(Settings.PREF_POPUP_KEYS_LABELS_ORDER+"_").constructLocale()
+            if (key.startsWith(Settings.PREF_POPUP_KEYS_LABELS_ORDER + "_")) {
+                val locale = key.substringAfter(Settings.PREF_POPUP_KEYS_LABELS_ORDER + "_").constructLocale()
                 SubtypeSettings.getEnabledSubtypes().forEach {
                     if (it.locale() == locale && !SubtypeSettings.isAdditionalSubtype(it)) {
                         SubtypeUtilsAdditional.changeAdditionalSubtype(it.toSettingsSubtype(), it.toSettingsSubtype(), context)
@@ -521,7 +555,8 @@ fun checkVersionUpgrade(context: Context) {
                     }
                 }
                 val additional = prefs.getString(Settings.PREF_ADDITIONAL_SUBTYPES, "")!!
-                val secondaryLocales = prefs.getString(key, "")!!.split(Separators.KV).filter { it.isNotBlank() }.joinToString(Separators.KV)
+                val secondaryLocales =
+                    prefs.getString(key, "")!!.split(Separators.KV).filter { it.isNotBlank() }.joinToString(Separators.KV)
                 additional.split(Separators.SETS).filter { it.isNotEmpty() }.forEach inner@{
                     val subtype = it.toSettingsSubtype()
                     if (subtype.locale != locale) return@inner
@@ -552,9 +587,13 @@ fun checkVersionUpgrade(context: Context) {
             if ("bengali," in value) {
                 prefs.edit().putString(key, value.replace("bengali,", "bengali_inscript,")).apply()
             }
-       }
+        }
     }
-    if (oldVersion <= 3001 && prefs.getInt(Settings.PREF_CLIPBOARD_HISTORY_RETENTION_TIME, Defaults.PREF_CLIPBOARD_HISTORY_RETENTION_TIME) <= 0) {
+    if (oldVersion <= 3001 && prefs.getInt(
+            Settings.PREF_CLIPBOARD_HISTORY_RETENTION_TIME,
+            Defaults.PREF_CLIPBOARD_HISTORY_RETENTION_TIME
+        ) <= 0
+    ) {
         prefs.edit().putInt(Settings.PREF_CLIPBOARD_HISTORY_RETENTION_TIME, 121).apply()
     }
     if (oldVersion <= 3002) {
@@ -618,8 +657,10 @@ fun checkVersionUpgrade(context: Context) {
     }
     if (oldVersion <= 3201) {
         prefs.edit {
-            putBoolean(Settings.PREF_SUGGEST_PUNCTUATION,
-                !prefs.getBoolean(Settings.PREF_BIGRAM_PREDICTIONS, Defaults.PREF_BIGRAM_PREDICTIONS))
+            putBoolean(
+                Settings.PREF_SUGGEST_PUNCTUATION,
+                !prefs.getBoolean(Settings.PREF_BIGRAM_PREDICTIONS, Defaults.PREF_BIGRAM_PREDICTIONS)
+            )
         }
     }
     upgradeToolbarPrefs(prefs)
