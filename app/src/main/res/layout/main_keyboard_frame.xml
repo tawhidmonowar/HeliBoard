@@ -32,16 +32,19 @@
         <include
             android:id="@+id/emoji_palettes_view"
             layout="@layout/emoji_palettes_view"
-            android:visibility="visible"/>
+            android:visibility="gone"/>
         <include
             android:id="@+id/clipboard_history_view"
             layout="@layout/clipboard_history_view"
-            android:visibility="visible"/>
-
-
+            android:visibility="gone"/>
         <include
             layout="@layout/quick_reply"
             android:id="@+id/quick_reply_container"
+            android:visibility="gone" />
+
+        <include
+            layout="@layout/menu_continer"
+            android:id="@+id/menu_container"
             android:visibility="gone" />
 
         <ImageButton

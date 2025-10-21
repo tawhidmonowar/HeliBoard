@@ -68,6 +68,7 @@ public final class KeyboardSwitcher implements KeyboardState.SwitchActions {
     private FrameLayout mStripContainer;
     private ClipboardHistoryView mClipboardHistoryView;
     private View mQuickReplyContainer;
+    private View mMenuContainer;
     private TextView mFakeToastView;
     private LatinIME mLatinIME;
     private RichInputMethodManager mRichImm;
@@ -328,6 +329,9 @@ public final class KeyboardSwitcher implements KeyboardState.SwitchActions {
         if (mQuickReplyContainer != null) {
             mQuickReplyContainer.setVisibility(View.GONE);
         }
+        if (mMenuContainer != null) {
+            mMenuContainer.setVisibility(View.GONE);
+        }
     }
 
     // Implements {@link KeyboardState.SwitchActions}.
@@ -399,7 +403,15 @@ public final class KeyboardSwitcher implements KeyboardState.SwitchActions {
             mClipboardHistoryView.stopClipboardHistory();
         }
         if (mQuickReplyContainer != null) {
+            // Ensure menu container is hidden when showing quick reply
+            if (mMenuContainer != null) {
+                mMenuContainer.setVisibility(View.GONE);
+            }
             mQuickReplyContainer.setVisibility(View.VISIBLE);
+            // Populate default quick reply texts when opening the view
+            ((helium314.keyboard.keyboard.quickreply.QuickReplyView) mQuickReplyContainer).populateQuickReplyTexts();
+            // Fetch AI-generated quick replies based on a sample message
+            ((helium314.keyboard.keyboard.quickreply.QuickReplyView) mQuickReplyContainer).sendDataAndRecive("Hello, can we talk?","English");
         }
     }
 
@@ -743,7 +755,11 @@ public final class KeyboardSwitcher implements KeyboardState.SwitchActions {
         mClipboardHistoryView = mCurrentInputView.findViewById(R.id.clipboard_history_view);
         mFakeToastView = mCurrentInputView.findViewById(R.id.fakeToast);
         mQuickReplyContainer = mCurrentInputView.findViewById(R.id.quick_reply_container);
-
+        mMenuContainer = mCurrentInputView.findViewById(R.id.menu_container);
+        // enable hardware acceleration similar to other views
+        if (mMenuContainer != null && isHardwareAcceleratedDrawingEnabled) {
+            mMenuContainer.setLayerType(android.view.View.LAYER_TYPE_HARDWARE, null);
+        }
         mKeyboardViewWrapper = mCurrentInputView.findViewById(R.id.keyboard_view_wrapper);
         mKeyboardViewWrapper.setKeyboardActionListener(mLatinIME.mKeyboardActionListener);
         mKeyboardView = mCurrentInputView.findViewById(R.id.keyboard_view);
@@ -810,6 +826,61 @@ public final class KeyboardSwitcher implements KeyboardState.SwitchActions {
             mLatinIME.showWindow(true);
         } catch (IllegalStateException e) {
             // in tests isInputViewShown returns true, but showWindow throws "IllegalStateException: Window token is not set yet."
+        }
+    }
+
+    public void setMenuKeyboard() {
+        if (DEBUG_ACTION) {
+            Log.d(TAG, "setMenuKeyboard");
+        }
+        mMainKeyboardFrame.setVisibility(View.VISIBLE);
+        mKeyboardView.setVisibility(View.GONE);
+        mEmojiTabStripView.setVisibility(View.GONE);
+        // Keep the suggestions strip bar visible while showing the menu
+        mSuggestionStripView.setVisibility(View.VISIBLE);
+        mStripContainer.setVisibility(View.VISIBLE);
+        mClipboardStripScrollView.setVisibility(View.GONE);
+        mEmojiPalettesView.setVisibility(View.GONE);
+        if (mClipboardHistoryView != null) {
+            mClipboardHistoryView.setVisibility(View.GONE);
+            mClipboardHistoryView.stopClipboardHistory();
+        }
+        if (mQuickReplyContainer != null) {
+            mQuickReplyContainer.setVisibility(View.GONE);
+        }
+        if (mMenuContainer != null) {
+            if (mMenuContainer.getVisibility() == View.VISIBLE) {
+                mMenuContainer.setVisibility(View.GONE);
+                setAlphabetKeyboard();
+            } else {
+                mMenuContainer.setVisibility(View.VISIBLE);
+                // size and pad like clipboard/emoji to make ScrollView live inside key area
+                final android.content.Context context = mCurrentInputView.getContext();
+                final int keyboardWidth = helium314.keyboard.latin.utils.ResourceUtils.getKeyboardWidth(context, helium314.keyboard.latin.settings.Settings.getValues());
+                final int height = helium314.keyboard.latin.utils.ResourceUtils.getSecondaryKeyboardHeight(context.getResources(), helium314.keyboard.latin.settings.Settings.getValues());
+                final android.view.ViewGroup.LayoutParams lp = mMenuContainer.getLayoutParams();
+                if (lp != null) {
+                    lp.width = keyboardWidth;
+                    lp.height = height;
+                    mMenuContainer.setLayoutParams(lp);
+                }
+                final android.content.res.TypedArray keyboardAttr = context.obtainStyledAttributes(
+                        null,
+                        helium314.keyboard.latin.R.styleable.Keyboard,
+                        helium314.keyboard.latin.R.attr.keyboardStyle,
+                        helium314.keyboard.latin.R.style.Keyboard);
+                final int leftPadding = (int) (keyboardAttr.getFraction(
+                        helium314.keyboard.latin.R.styleable.Keyboard_keyboardLeftPadding,
+                        keyboardWidth, keyboardWidth, 0f
+                ) * helium314.keyboard.latin.settings.Settings.getValues().mSidePaddingScale);
+                final int rightPadding = (int) (keyboardAttr.getFraction(
+                        helium314.keyboard.latin.R.styleable.Keyboard_keyboardRightPadding,
+                        keyboardWidth, keyboardWidth, 0f
+                ) * helium314.keyboard.latin.settings.Settings.getValues().mSidePaddingScale);
+                keyboardAttr.recycle();
+                mMenuContainer.setPadding(leftPadding, mMenuContainer.getPaddingTop(), rightPadding, mMenuContainer.getPaddingBottom());
+                mMenuContainer.requestLayout();
+            }
         }
     }
 }
