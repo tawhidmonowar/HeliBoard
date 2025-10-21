@@ -67,6 +67,7 @@ public final class KeyboardSwitcher implements KeyboardState.SwitchActions {
     private SuggestionStripView mSuggestionStripView;
     private FrameLayout mStripContainer;
     private ClipboardHistoryView mClipboardHistoryView;
+    private View mQuickReplyContainer;
     private TextView mFakeToastView;
     private LatinIME mLatinIME;
     private RichInputMethodManager mRichImm;
@@ -324,6 +325,9 @@ public final class KeyboardSwitcher implements KeyboardState.SwitchActions {
         mSuggestionStripView.setVisibility(stripVisibility);
         mClipboardHistoryView.setVisibility(View.GONE);
         mClipboardHistoryView.stopClipboardHistory();
+        if (mQuickReplyContainer != null) {
+            mQuickReplyContainer.setVisibility(View.GONE);
+        }
     }
 
     // Implements {@link KeyboardState.SwitchActions}.
@@ -342,6 +346,9 @@ public final class KeyboardSwitcher implements KeyboardState.SwitchActions {
         mClipboardStripScrollView.setVisibility(View.GONE);
         mEmojiTabStripView.setVisibility(View.VISIBLE);
         mClipboardHistoryView.setVisibility(View.GONE);
+        if (mQuickReplyContainer != null) {
+            mQuickReplyContainer.setVisibility(View.GONE);
+        }
         mEmojiPalettesView.startEmojiPalettes(mKeyboardView.getKeyVisualAttribute(),
                 mLatinIME.getCurrentInputEditorInfo(), mLatinIME.mKeyboardActionListener);
         mEmojiPalettesView.setVisibility(View.VISIBLE);
@@ -364,9 +371,36 @@ public final class KeyboardSwitcher implements KeyboardState.SwitchActions {
         mClipboardStripScrollView.post(() -> mClipboardStripScrollView.fullScroll(HorizontalScrollView.FOCUS_RIGHT));
         mClipboardStripScrollView.setVisibility(View.VISIBLE);
         mEmojiPalettesView.setVisibility(View.GONE);
+        if (mQuickReplyContainer != null) {
+            mQuickReplyContainer.setVisibility(View.GONE);
+        }
         mClipboardHistoryView.startClipboardHistory(mLatinIME.getClipboardHistoryManager(), mKeyboardView.getKeyVisualAttribute(),
                 mLatinIME.getCurrentInputEditorInfo(), mLatinIME.mKeyboardActionListener);
         mClipboardHistoryView.setVisibility(View.VISIBLE);
+    }
+
+    public void setQuickReplyKeyboard() {
+        if (DEBUG_ACTION) {
+            Log.d(TAG, "setQuickReplyKeyboard");
+        }
+        mMainKeyboardFrame.setVisibility(View.VISIBLE);
+        // The visibility of {@link #mKeyboardView} must be aligned with {@link #MainKeyboardFrame}.
+        // @see #getVisibleKeyboardView() and
+        // @see LatinIME#onComputeInset(android.inputmethodservice.InputMethodService.Insets)
+        mKeyboardView.setVisibility(View.GONE);
+        mEmojiTabStripView.setVisibility(View.GONE);
+        mSuggestionStripView.setVisibility(View.GONE);
+        // Hide the entire strip container so quick reply can take the full area
+        mStripContainer.setVisibility(View.GONE);
+        mClipboardStripScrollView.setVisibility(View.GONE);
+        mEmojiPalettesView.setVisibility(View.GONE);
+        if (mClipboardHistoryView != null) {
+            mClipboardHistoryView.setVisibility(View.GONE);
+            mClipboardHistoryView.stopClipboardHistory();
+        }
+        if (mQuickReplyContainer != null) {
+            mQuickReplyContainer.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -436,6 +470,10 @@ public final class KeyboardSwitcher implements KeyboardState.SwitchActions {
 
                 mClipboardHistoryView.stopClipboardHistory();
                 mClipboardHistoryView.setVisibility(View.GONE);
+
+                if (mQuickReplyContainer != null) {
+                    mQuickReplyContainer.setVisibility(View.GONE);
+                }
 
                 mMainKeyboardFrame.setVisibility(View.VISIBLE);
                 mKeyboardView.setVisibility(View.VISIBLE);
@@ -621,8 +659,12 @@ public final class KeyboardSwitcher implements KeyboardState.SwitchActions {
         return mClipboardHistoryView != null && mClipboardHistoryView.isShown();
     }
 
+    public boolean isShowingQuickReply() {
+        return mQuickReplyContainer != null && mQuickReplyContainer.isShown();
+    }
+
     public boolean isShowingPopupKeysPanel() {
-        if (isShowingEmojiPalettes() || isShowingClipboardHistory()) {
+        if (isShowingEmojiPalettes() || isShowingClipboardHistory() || isShowingQuickReply()) {
             return false;
         }
         return mKeyboardView.isShowingPopupKeysPanel();
@@ -637,6 +679,8 @@ public final class KeyboardSwitcher implements KeyboardState.SwitchActions {
             return mEmojiPalettesView;
         } else if (isShowingClipboardHistory()) {
             return mClipboardHistoryView;
+        } else if (isShowingQuickReply()) {
+            return mQuickReplyContainer;
         }
         return mKeyboardView;
     }
@@ -698,6 +742,7 @@ public final class KeyboardSwitcher implements KeyboardState.SwitchActions {
         mEmojiPalettesView = mCurrentInputView.findViewById(R.id.emoji_palettes_view);
         mClipboardHistoryView = mCurrentInputView.findViewById(R.id.clipboard_history_view);
         mFakeToastView = mCurrentInputView.findViewById(R.id.fakeToast);
+        mQuickReplyContainer = mCurrentInputView.findViewById(R.id.quick_reply_container);
 
         mKeyboardViewWrapper = mCurrentInputView.findViewById(R.id.keyboard_view_wrapper);
         mKeyboardViewWrapper.setKeyboardActionListener(mLatinIME.mKeyboardActionListener);
@@ -713,6 +758,13 @@ public final class KeyboardSwitcher implements KeyboardState.SwitchActions {
         mClipboardStripScrollView = mCurrentInputView.findViewById(R.id.clipboard_strip_scroll_view);
         mSuggestionStripView = mCurrentInputView.findViewById(R.id.suggestion_strip_view);
         mStripContainer = mCurrentInputView.findViewById(R.id.strip_container);
+
+        if (mQuickReplyContainer != null) {
+            View back = mQuickReplyContainer.findViewById(R.id.btn_back_quick_reply);
+            if (back != null) {
+                back.setOnClickListener(v -> setAlphabetKeyboard());
+            }
+        }
 
         prefs.registerOnSharedPreferenceChangeListener(mSuggestionStripView);
         prefs.registerOnSharedPreferenceChangeListener(mClipboardHistoryView);

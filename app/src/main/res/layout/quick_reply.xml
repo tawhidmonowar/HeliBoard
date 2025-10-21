@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/white"
+    android:padding="16dp">
+
+    <!-- Header with Back Arrow and Title -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="16dp">
+
+        <ImageView
+            android:id="@+id/btn_back_quick_reply"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_arrow_back"
+            android:tint="@android:color/black" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Quick Reply"
+            android:textSize="18sp"
+            android:textColor="@android:color/black"
+            android:textStyle="normal"
+            android:layout_marginStart="8dp" />
+
+    </LinearLayout>
+
+    <!-- Tabs: Positive, Negative, Neutral -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:layout_marginBottom="16dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_positive"
+                android:text="Positive"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:textColor="@color/highlight_color_holo_white"
+                android:background="@drawable/bg_tab_selected"
+                 />
+
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_nagetive"
+                android:text="Negative"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:textColor="@color/background_amoled_black"
+                android:background="@drawable/bg_tab_unselected"
+                />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_neutral"
+                android:text="Neutral"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:textColor="@color/background_amoled_black"
+                android:background="@drawable/bg_tab_unselected"
+                />
+
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+    <!-- Quick Reply Options -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Reply Option 1 -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hi John, what is it?"
+            android:textSize="14sp"
+            android:textColor="@android:color/black"
+            android:background="@drawable/bg_reply_option"
+            android:padding="16dp"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Reply Option 2 -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hello John, what do you need?"
+            android:textSize="14sp"
+            android:textColor="@android:color/black"
+            android:background="@drawable/bg_reply_option"
+            android:padding="16dp"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Reply Option 3 -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hey John, what's going on?"
+            android:textSize="14sp"
+            android:textColor="@android:color/black"
+            android:background="@drawable/bg_reply_option"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp" />
+
+    </LinearLayout>
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:textColor="@color/background_amoled_black"
+        android:background="@drawable/bg_tab_unselected"
+        />
+
+</LinearLayout>

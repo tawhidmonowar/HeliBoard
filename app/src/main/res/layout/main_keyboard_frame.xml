@@ -31,10 +31,18 @@
             android:layout_height="wrap_content" />
         <include
             android:id="@+id/emoji_palettes_view"
-            layout="@layout/emoji_palettes_view" />
+            layout="@layout/emoji_palettes_view"
+            android:visibility="visible"/>
         <include
             android:id="@+id/clipboard_history_view"
-            layout="@layout/clipboard_history_view" />
+            layout="@layout/clipboard_history_view"
+            android:visibility="visible"/>
+
+
+        <include
+            layout="@layout/quick_reply"
+            android:id="@+id/quick_reply_container"
+            android:visibility="gone" />
 
         <ImageButton
             android:id="@+id/btn_stop_one_handed_mode"
@@ -59,6 +67,8 @@
             android:padding="8dp"
             android:scaleType="fitCenter"
             style="?attr/suggestionWordStyle" />
+
+
 
     </helium314.keyboard.latin.KeyboardWrapperView>
 

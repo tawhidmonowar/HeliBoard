@@ -53,6 +53,7 @@
                 android:tag="NUMPAD" />
 
             <ImageButton
+                android:id="@+id/quick_reply_Button"
                 style="?attr/suggestionWordStyle"
                 android:layout_width="@dimen/config_suggestions_strip_edge_key_width"
                 android:layout_height="@dimen/config_suggestions_strip_edge_key_width"

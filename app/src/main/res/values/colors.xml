@@ -78,4 +78,6 @@
 
     <!-- Scrollbar color -->
     <color name="toolbar_scrollbar">#66808080</color>
+
+    <color name="transparent">#00000000</color>
 </resources>

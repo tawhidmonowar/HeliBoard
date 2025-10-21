@@ -82,7 +82,16 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
         val inflater = LayoutInflater.from(context)
         inflater.inflate(R.layout.suggestions_strip, this)
         moreSuggestionsContainer = inflater.inflate(R.layout.more_suggestions, null)
+        // Wire quick reply button to show quick reply container
+        findViewById<ImageButton>(R.id.quick_reply_Button)?.setOnClickListener {
+            AudioAndHapticFeedbackManager.getInstance().performHapticAndAudioFeedback(KeyCode.NOT_SPECIFIED, this)
+            KeyboardSwitcher.getInstance().setQuickReplyKeyboard()
+        }
 
+        findViewById<ImageButton>(R.id.btn_back_quick_reply)?.setOnClickListener {
+            AudioAndHapticFeedbackManager.getInstance().performHapticAndAudioFeedback(KeyCode.NOT_SPECIFIED, this)
+            KeyboardSwitcher.getInstance().setAlphabetKeyboard()
+        }
         val colors = Settings.getValues().mColors
         colors.setBackground(this, ColorType.STRIP_BACKGROUND)
         val customTypeface = Settings.getInstance().customTypeface
