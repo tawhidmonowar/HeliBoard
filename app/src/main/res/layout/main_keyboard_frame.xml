@@ -10,11 +10,17 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:visibility="gone">
 
     <include
         android:id="@+id/strip_container"
         layout="@layout/strip_container" />
+
+    <include
+        android:id="@+id/ai_grammar_layout"
+        layout="@layout/ai_grammar_layout"
+        android:visibility="gone" />
 
     <!-- To ensure that key preview popup is correctly placed when the current system locale is
          one of RTL locales, layoutDirection="ltr" is needed in the SDK version 17+. -->

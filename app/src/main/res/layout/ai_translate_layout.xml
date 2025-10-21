@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+    AI Translation Layout
+    This layout replaces the keyboard when translation features are selected
+-->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:background="@color/keyboard_background"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <!-- AI Feature Title -->
+    <TextView
+        android:id="@+id/ai_feature_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="AI Translator"
+        android:textColor="@color/foreground"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <!-- Language Selection Row -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <Spinner
+            android:id="@+id/spinner_from_language"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/keyboard_background_lxx_base" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:text="→"
+            android:textColor="@color/foreground"
+            android:textSize="18sp" />
+
+        <Spinner
+            android:id="@+id/spinner_to_language"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/keyboard_background_lxx_base" />
+
+    </LinearLayout>
+
+    <!-- Input Text Area -->
+    <EditText
+        android:id="@+id/ai_input_text"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@drawable/keyboard_background_lxx_base"
+        android:gravity="top|start"
+        android:hint="Enter text to translate..."
+        android:inputType="textMultiLine"
+        android:padding="12dp"
+        android:scrollbars="vertical"
+        android:textColor="@color/foreground"
+        android:textColorHint="@color/foreground_weak" />
+
+    <!-- Translation Result Area -->
+    <TextView
+        android:id="@+id/translation_result"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/keyboard_background_lxx_base"
+        android:gravity="top|start"
+        android:hint="Translation will appear here..."
+        android:padding="12dp"
+        android:scrollbars="vertical"
+        android:textColor="@color/foreground"
+        android:textColorHint="@color/foreground_weak" />
+
+    <!-- Action Buttons Row -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_translate"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/keyboard_background_lxx_base"
+            android:text="Translate"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/btn_swap_languages"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/keyboard_background_lxx_base"
+            android:text="Swap"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <!-- Bottom Control Bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <!-- Back to Keyboard Button -->
+        <ImageButton
+            android:id="@+id/btn_back_to_keyboard"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/keyboard_background_lxx_base"
+            android:contentDescription="Back to keyboard"
+            android:padding="8dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_arrow_back"
+            android:tint="@color/accent" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <!-- Apply Button -->
+        <Button
+            android:id="@+id/btn_apply_translation"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:background="@drawable/keyboard_background_lxx_base"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:text="Apply"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+</LinearLayout>

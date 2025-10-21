@@ -22,6 +22,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodSubtype;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -290,6 +291,36 @@ public final class KeyboardSwitcher implements KeyboardState.SwitchActions {
         setKeyboard(KeyboardId.ELEMENT_SYMBOLS, KeyboardSwitchState.OTHER);
     }
 
+    @Override
+    public void setAiGrammarLayout() {
+        // Hide the main keyboard view
+        if (mMainKeyboardFrame != null) {
+            View keyboardWrapper = mMainKeyboardFrame.findViewById(R.id.keyboard_view_wrapper);
+            if (keyboardWrapper != null) {
+                keyboardWrapper.setVisibility(View.GONE);
+            }
+        }
+
+        // Hide the suggestion strip
+        if (mStripContainer != null) {
+            mStripContainer.setVisibility(View.GONE);
+        }
+
+        // Show the AI grammar layout
+        if (mMainKeyboardFrame != null) {
+            View aiGrammarLayout = mMainKeyboardFrame.findViewById(R.id.ai_grammar_layout);
+            if (aiGrammarLayout != null) {
+                aiGrammarLayout.setVisibility(View.VISIBLE);
+
+                // Set up the back to keyboard button
+                ImageButton backButton = aiGrammarLayout.findViewById(R.id.btn_back_to_keyboard);
+                if (backButton != null) {
+                    backButton.setOnClickListener(v -> setMainKeyboardFrame());
+                }
+            }
+        }
+    }
+
     // Implements {@link KeyboardState.SwitchActions}.
     @Override
     public void setSymbolsShiftedKeyboard() {
@@ -303,6 +334,39 @@ public final class KeyboardSwitcher implements KeyboardState.SwitchActions {
             @NonNull final SettingsValues settingsValues,
             @NonNull final KeyboardSwitchState toggleState) {
         return settingsValues.mHasHardwareKeyboard && toggleState == KeyboardSwitchState.HIDDEN;
+    }
+
+    public void setMainKeyboardFrame() {
+        // Show the main keyboard view
+        if (mMainKeyboardFrame != null) {
+            View keyboardWrapper = mMainKeyboardFrame.findViewById(R.id.keyboard_view_wrapper);
+            if (keyboardWrapper != null) {
+                keyboardWrapper.setVisibility(View.VISIBLE);
+            }
+        }
+
+        // Show the suggestion strip
+        if (mStripContainer != null) {
+            mStripContainer.setVisibility(View.VISIBLE);
+        }
+
+        // Hide the AI grammar layout
+        if (mMainKeyboardFrame != null) {
+            View aiGrammarLayout = mMainKeyboardFrame.findViewById(R.id.ai_grammar_layout);
+            if (aiGrammarLayout != null) {
+                aiGrammarLayout.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    public boolean isAiGrammarLayoutActive() {
+        if (mMainKeyboardFrame != null) {
+            View aiGrammarLayout = mMainKeyboardFrame.findViewById(R.id.ai_grammar_layout);
+            if (aiGrammarLayout != null) {
+                return aiGrammarLayout.getVisibility() == View.VISIBLE;
+            }
+        }
+        return false;
     }
 
     private void setMainKeyboardFrame(
@@ -678,7 +742,7 @@ public final class KeyboardSwitcher implements KeyboardState.SwitchActions {
         }
     }
 
-    @SuppressLint("InflateParams")
+    @SuppressLint({"InflateParams", "WrongViewCast"})
     public View onCreateInputView(@NonNull Context displayContext, final boolean isHardwareAcceleratedDrawingEnabled) {
         if (mKeyboardView != null) {
             mKeyboardView.closing();
@@ -698,7 +762,6 @@ public final class KeyboardSwitcher implements KeyboardState.SwitchActions {
         mEmojiPalettesView = mCurrentInputView.findViewById(R.id.emoji_palettes_view);
         mClipboardHistoryView = mCurrentInputView.findViewById(R.id.clipboard_history_view);
         mFakeToastView = mCurrentInputView.findViewById(R.id.fakeToast);
-
         mKeyboardViewWrapper = mCurrentInputView.findViewById(R.id.keyboard_view_wrapper);
         mKeyboardViewWrapper.setKeyboardActionListener(mLatinIME.mKeyboardActionListener);
         mKeyboardView = mCurrentInputView.findViewById(R.id.keyboard_view);

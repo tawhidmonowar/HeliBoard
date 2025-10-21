@@ -71,6 +71,7 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
         fun pickSuggestionManually(word: SuggestedWordInfo?)
         fun onCodeInput(primaryCode: Int, x: Int, y: Int, isKeyRepeat: Boolean)
         fun removeSuggestion(word: String?)
+        fun showFixGrammarUI()
     }
 
     private val moreSuggestionsContainer: View
@@ -112,6 +113,8 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
     private val pinnedKeys: ViewGroup = findViewById(R.id.pinned_keys)
     private val suggestionsStrip: ViewGroup = findViewById(R.id.suggestions_strip)
     private val toolbarExpandKey = findViewById<ImageButton>(R.id.suggestions_strip_toolbar_key)
+    private val emojiKey = findViewById<ImageButton>(R.id.suggestions_strip_emoji_key)
+    private val fixGrammarButton = findViewById<ImageButton>(R.id.fix_grammar_button)
     private val incognitoIcon = KeyboardIconsSet.instance.getNewDrawable(ToolbarKey.INCOGNITO.name, context)
     private val toolbarArrowIcon = KeyboardIconsSet.instance.getNewDrawable(KeyboardIconsSet.NAME_TOOLBAR_KEY, context)
     private val defaultToolbarBackground: Drawable = toolbarExpandKey.background
@@ -129,6 +132,9 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
         colors.setBackground(toolbarExpandKey, ColorType.STRIP_BACKGROUND) // necessary because background is re-used for defaultToolbarBackground
         colors.setColor(toolbarExpandKey, ColorType.TOOL_BAR_EXPAND_KEY)
         colors.setColor(toolbarExpandKey.background, ColorType.TOOL_BAR_EXPAND_KEY_BACKGROUND)
+
+        emojiKey.setOnClickListener(this)
+        fixGrammarButton.setOnClickListener(this)
 
         // background indicator for pinned keys
         val color = colors.get(ColorType.TOOL_BAR_KEY_ENABLED_BACKGROUND) or -0x1000000 // ignore alpha (in Java this is more readable 0xFF000000)
@@ -307,6 +313,14 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
                 if (tag === ToolbarKey.INCOGNITO) updateKeys() // update expand key icon
                 return
             }
+        }
+        if (view === emojiKey) {
+            listener.onCodeInput(KeyCode.EMOJI, Constants.SUGGESTION_STRIP_COORDINATE, Constants.SUGGESTION_STRIP_COORDINATE, false)
+            return
+        }
+        if (view === fixGrammarButton) {
+            listener.showFixGrammarUI()
+            return
         }
         if (view === toolbarExpandKey) {
             setToolbarVisibility(toolbarContainer.visibility != VISIBLE)

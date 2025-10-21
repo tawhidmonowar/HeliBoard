@@ -50,6 +50,9 @@ public final class KeyboardState {
         void toggleNumpad(final boolean withSliding, final int autoCapsFlags, final int recapitalizeMode,
                 final boolean forceReturnToAlpha);
         void setSymbolsKeyboard();
+
+        void setAiGrammarLayout();
+
         void setSymbolsShiftedKeyboard();
 
         /**

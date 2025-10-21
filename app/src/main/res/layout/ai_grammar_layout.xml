@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    AI Grammar Fix Layout
+    This layout replaces the keyboard when grammar fix features are selected
+-->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ai_grammar_layout_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:orientation="vertical"
+    android:background="@color/keyboard_background"
+    android:padding="8dp">
+
+    <!-- AI Feature Title -->
+    <TextView
+        android:id="@+id/ai_feature_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Grammar Checker"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/foreground"
+        android:gravity="center"
+        android:padding="8dp" />
+
+    <!-- Input Text Area -->
+    <EditText
+        android:id="@+id/ai_input_text"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@drawable/keyboard_background_lxx_base"
+        android:hint="Enter text to check grammar..."
+        android:textColor="@color/foreground"
+        android:textColorHint="@color/foreground_weak"
+        android:padding="12dp"
+        android:gravity="top|start"
+        android:inputType="textMultiLine"
+        android:scrollbars="vertical" />
+
+    <!-- Corrected Text Area -->
+    <TextView
+        android:id="@+id/corrected_text"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@drawable/keyboard_background_lxx_base"
+        android:hint="Corrected text will appear here..."
+        android:textColor="@color/foreground"
+        android:textColorHint="@color/foreground_weak"
+        android:padding="12dp"
+        android:gravity="top|start"
+        android:layout_marginTop="8dp"
+        android:scrollbars="vertical" />
+
+    <!-- Action Buttons Row -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/btn_check_grammar"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="4dp"
+            android:text="Check Grammar"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/btn_clear_text"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:layout_marginStart="4dp"
+            android:text="Clear"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <!-- Bottom Control Bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp"
+        android:gravity="center_vertical">
+
+        <!-- Back to Keyboard Button -->
+        <ImageButton
+            android:id="@+id/btn_back_to_keyboard"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_arrow_back"
+            android:contentDescription="Back to keyboard"
+            android:scaleType="centerInside"
+            android:padding="8dp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <!-- Apply Button -->
+        <Button
+            android:id="@+id/btn_apply_correction"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="Apply"
+            android:textSize="14sp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+    AI Writing Assistance Layout
+    This layout replaces the keyboard when AI writing features are selected
+-->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:background="@color/keyboard_background"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <!-- AI Feature Title -->
+    <TextView
+        android:id="@+id/ai_feature_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="AI Writing Assistant"
+        android:textColor="@color/foreground"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <!-- Input Text Area -->
+    <EditText
+        android:id="@+id/ai_input_text"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:background="@drawable/keyboard_background_lxx_base"
+        android:gravity="top|start"
+        android:hint="Enter text to improve..."
+        android:inputType="textMultiLine"
+        android:padding="12dp"
+        android:scrollbars="vertical"
+        android:textColor="@color/foreground"
+        android:textColorHint="@color/foreground_weak" />
+
+    <!-- Action Buttons Row -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_fix_grammar"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="4dp"
+            android:layout_weight="1"
+            android:text="Fix Grammar"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/btn_improve_style"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_weight="1"
+            android:text="Improve Style"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/btn_make_shorter"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="4dp"
+            android:layout_weight="1"
+            android:text="Make Shorter"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <!-- Bottom Control Bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <!-- Back to Keyboard Button -->
+        <ImageButton
+            android:id="@+id/btn_back_to_keyboard"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Back to keyboard"
+            android:padding="8dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_arrow_back" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <!-- Apply Button -->
+        <Button
+            android:id="@+id/btn_apply_changes"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:text="Apply"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+</LinearLayout>

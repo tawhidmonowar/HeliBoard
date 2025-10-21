@@ -1092,6 +1092,14 @@ public class LatinIME extends InputMethodService implements
             }
         }
 
+        // Check if AI grammar layout is active and hide suggestion strip if it is
+        if (mKeyboardSwitcher.isAiGrammarLayoutActive()) {
+            View stripContainer = mKeyboardSwitcher.getStripContainer();
+            if (stripContainer != null) {
+                stripContainer.setVisibility(View.GONE);
+            }
+        }
+
         mainKeyboardView.setMainDictionaryAvailability(mDictionaryFacilitator.hasAtLeastOneInitializedMainDictionary());
         mainKeyboardView.setKeyPreviewPopupEnabled(currentSettingsValues.mKeyPreviewPopupOn);
         mainKeyboardView.setSlidingKeyInputPreviewEnabled(currentSettingsValues.mSlidingKeyInputPreviewEnabled);
@@ -1719,6 +1727,12 @@ public class LatinIME extends InputMethodService implements
                 mSuggestionStripView.setToolbarVisibility(true);
             }
         }
+    }
+
+    @Override
+    public void showFixGrammarUI() {
+        // Switch to AI grammar layout and hide the main keyboard
+        mKeyboardSwitcher.setAiGrammarLayout();
     }
 
     @Override
