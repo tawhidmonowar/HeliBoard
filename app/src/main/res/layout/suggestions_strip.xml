@@ -77,14 +77,13 @@
 
             <ImageButton
                 style="?attr/suggestionWordStyle"
-                android:layout_width="@dimen/config_suggestions_strip_edge_key_width"
-                android:layout_height="@dimen/config_suggestions_strip_edge_key_width"
+                android:layout_width="24.dp"
+                android:layout_height="24.dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="1dp"
                 android:layout_weight="0"
-                android:tint="@color/background_amoled_black"
                 android:contentDescription="@string/more_keys_strip_description"
-                android:background="@drawable/sym_keyboard_smiley_holo"/>
+                android:background="@drawable/outline_emoji"/>
 
             <ImageButton
                 android:id="@+id/suggestions_strip_toolbar_key"
@@ -98,8 +97,8 @@
 
             <ImageButton
                 style="?attr/suggestionWordStyle"
-                android:layout_width="@dimen/config_suggestions_strip_edge_key_width"
-                android:layout_height="@dimen/config_suggestions_strip_edge_key_width"
+                android:layout_width="24.dp"
+                android:layout_height="24.dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="1dp"
                 android:padding="10.dp"
@@ -134,7 +133,7 @@
                     style="?attr/suggestionWordStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"></LinearLayout>
+                    android:orientation="horizontal"/>
             </HorizontalScrollView>
             <!-- Provide audio and haptic feedback by ourselves based on the keyboard settings.
                  We just need to ignore the system's audio and haptic feedback settings. -->
@@ -142,8 +141,8 @@
                    check what is going on in the layout helper? -->
             <LinearLayout
                 android:id="@+id/suggestions_strip"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:hapticFeedbackEnabled="false"
