@@ -49,6 +49,8 @@
         <include
             layout="@layout/quick_reply"
             android:id="@+id/quick_reply_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:visibility="gone" />
 
         <ImageButton

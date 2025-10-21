@@ -399,6 +399,33 @@ public final class KeyboardSwitcher implements KeyboardState.SwitchActions {
             mClipboardHistoryView.stopClipboardHistory();
         }
         if (mQuickReplyContainer != null) {
+            // Force measure the main keyboard frame first if it hasn't been measured
+            if (mMainKeyboardFrame != null) {
+                if (mMainKeyboardFrame.getMeasuredWidth() == 0 || mMainKeyboardFrame.getMeasuredHeight() == 0) {
+                    // Force measurement of main keyboard frame
+                    mMainKeyboardFrame.measure(
+                        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+                    );
+                }
+                
+                final int mainWidth = mMainKeyboardFrame.getMeasuredWidth();
+                final int mainHeight = mMainKeyboardFrame.getMeasuredHeight();
+                
+                // Apply the main keyboard frame's dimensions to quick reply container
+                if (mainWidth > 0 && mainHeight > 0) {
+                    final android.view.ViewGroup.LayoutParams layoutParams = mQuickReplyContainer.getLayoutParams();
+                    layoutParams.width = mainWidth;
+                    layoutParams.height = mainHeight;
+                    mQuickReplyContainer.setLayoutParams(layoutParams);
+                    
+                    // Force measure the quick reply container with the new dimensions
+                    mQuickReplyContainer.measure(
+                        View.MeasureSpec.makeMeasureSpec(mainWidth, View.MeasureSpec.EXACTLY),
+                        View.MeasureSpec.makeMeasureSpec(mainHeight, View.MeasureSpec.EXACTLY)
+                    );
+                }
+            }
             mQuickReplyContainer.setVisibility(View.VISIBLE);
         }
     }
