@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/custom_keyboard_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/keyboard_background"
+    android:layoutDirection="ltr"
+    android:orientation="vertical"
+    android:padding="4dp">
+
+    <!-- First row -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="2dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/settings_key"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_keyboard_key_lxx_base"
+            android:gravity="center"
+            android:text="⚙"
+            android:textColor="@color/key_text_color_lxx_light"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/voice_input_key"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_keyboard_key_lxx_base"
+            android:gravity="center"
+            android:text="🎤"
+            android:textColor="@color/key_text_color_lxx_light"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_keyboard_key_lxx_base"
+            android:gravity="center"
+            android:text="3"
+            android:textColor="@color/key_text_color_lxx_light"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_keyboard_key_lxx_base"
+            android:gravity="center"
+            android:text="4"
+            android:textColor="@color/key_text_color_lxx_light"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_keyboard_key_lxx_base"
+            android:gravity="center"
+            android:text="5"
+            android:textColor="@color/key_text_color_lxx_light"
+            android:textSize="18sp" />
+
+
+    </LinearLayout>
+
+    <!-- Second row -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="2dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_keyboard_key_lxx_base"
+            android:gravity="center"
+            android:text="6"
+            android:textColor="@color/key_text_color_lxx_light"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_keyboard_key_lxx_base"
+            android:gravity="center"
+            android:text="7"
+            android:textColor="@color/key_text_color_lxx_light"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_keyboard_key_lxx_base"
+            android:gravity="center"
+            android:text="8"
+            android:textColor="@color/key_text_color_lxx_light"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_keyboard_key_lxx_base"
+            android:gravity="center"
+            android:text="9"
+            android:textColor="@color/key_text_color_lxx_light"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_keyboard_key_lxx_base"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@color/key_text_color_lxx_light"
+            android:textSize="18sp" />
+
+
+    </LinearLayout>
+
+    <!-- Third row -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_keyboard_key_lxx_base"
+            android:gravity="center"
+            android:text="@"
+            android:textColor="@color/key_text_color_lxx_light"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_keyboard_key_lxx_base"
+            android:gravity="center"
+            android:text="#"
+            android:textColor="@color/key_text_color_lxx_light"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_keyboard_key_lxx_base"
+            android:gravity="center"
+            android:text="$"
+            android:textColor="@color/key_text_color_lxx_light"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_keyboard_key_lxx_base"
+            android:gravity="center"
+            android:text="%"
+            android:textColor="@color/key_text_color_lxx_light"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_keyboard_key_lxx_base"
+            android:gravity="center"
+            android:text="&amp;"
+            android:textColor="@color/key_text_color_lxx_light"
+            android:textSize="18sp" />
+
+
+    </LinearLayout>
+
+</LinearLayout>

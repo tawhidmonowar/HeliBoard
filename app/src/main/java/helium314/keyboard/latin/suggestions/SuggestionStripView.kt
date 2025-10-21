@@ -7,6 +7,7 @@ package helium314.keyboard.latin.suggestions
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.graphics.Color
@@ -204,6 +205,92 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
         listener = newListener
         moreSuggestionsView.listener = newListener
         moreSuggestionsView.mainKeyboardView = inputView.findViewById(R.id.keyboard_view)
+        this.inputView = inputView
+    }
+
+    private var inputView: View? = null
+    private var isCustomLayoutVisible = false
+
+    private fun toggleCustomKeyboardLayout() {
+        val keyboardWrapperView = inputView?.findViewById<ViewGroup>(R.id.keyboard_view_wrapper) ?: return
+        val mainKeyboardView = keyboardWrapperView.findViewById<View>(R.id.keyboard_view)
+        val customKeyboardLayout = keyboardWrapperView.findViewById<View>(R.id.custom_keyboard_layout)
+
+        if (isCustomLayoutVisible) {
+            // Show main keyboard, hide custom layout
+            mainKeyboardView?.visibility = VISIBLE
+            customKeyboardLayout?.visibility = GONE
+            isCustomLayoutVisible = false
+        } else {
+            // Hide main keyboard, show custom layout
+            // Force measure the main keyboard first if it hasn't been measured
+            if (mainKeyboardView != null && customKeyboardLayout != null) {
+                if (mainKeyboardView.measuredWidth == 0 || mainKeyboardView.measuredHeight == 0) {
+                    // Force measurement of main keyboard
+                    mainKeyboardView.measure(
+                        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+                    )
+                }
+                
+                val mainWidth = mainKeyboardView.measuredWidth
+                val mainHeight = mainKeyboardView.measuredHeight
+                
+                // Apply the main keyboard's dimensions to custom layout
+                if (mainWidth > 0 && mainHeight > 0) {
+                    val layoutParams = customKeyboardLayout.layoutParams
+                    layoutParams.width = mainWidth
+                    layoutParams.height = mainHeight
+                    customKeyboardLayout.layoutParams = layoutParams
+                    
+                    // Force measure the custom layout with the new dimensions
+                    customKeyboardLayout.measure(
+                        View.MeasureSpec.makeMeasureSpec(mainWidth, View.MeasureSpec.EXACTLY),
+                        View.MeasureSpec.makeMeasureSpec(mainHeight, View.MeasureSpec.EXACTLY)
+                    )
+                }
+            }
+            
+            mainKeyboardView?.visibility = GONE
+            customKeyboardLayout?.visibility = VISIBLE
+            isCustomLayoutVisible = true
+            
+            // Set up click listener for settings key
+            setupCustomKeyboardClickListeners()
+            
+            // Force a layout pass to ensure proper positioning
+            keyboardWrapperView.requestLayout()
+        }
+    }
+
+    private fun setupCustomKeyboardClickListeners() {
+        val keyboardWrapperView = inputView?.findViewById<ViewGroup>(R.id.keyboard_view_wrapper)
+        val customKeyboardLayout = keyboardWrapperView?.findViewById<View>(R.id.custom_keyboard_layout)
+        val settingsKey = customKeyboardLayout?.findViewById<View>(R.id.settings_key)
+        
+        settingsKey?.setOnClickListener {
+            launchSettings()
+        }
+        
+        val voiceInputKey = customKeyboardLayout?.findViewById<View>(R.id.voice_input_key)
+        voiceInputKey?.setOnClickListener {
+            launchVoiceInput()
+        }
+    }
+
+    private fun launchVoiceInput() {
+        // Create a voice input event and trigger it through the listener
+        listener.onCodeInput(KeyCode.VOICE_INPUT, 0, 0, false)
+    }
+
+    private fun launchSettings() {
+        val context = context
+        val intent = Intent()
+        intent.setClass(context, helium314.keyboard.settings.SettingsActivity2::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or 
+                     Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED or 
+                     Intent.FLAG_ACTIVITY_CLEAR_TOP
+        context.startActivity(intent)
     }
 
     fun setRtl(isRtlLanguage: Boolean) {
@@ -319,6 +406,7 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
         }
         if (view === toolbarExpandKey) {
             setToolbarVisibility(toolbarContainer.visibility != VISIBLE)
+            toggleCustomKeyboardLayout()
         }
 
         // tag for word views is set in SuggestionStripLayoutHelper (setupWordViewsTextAndColor, layoutPunctuationSuggestions)

@@ -28,7 +28,14 @@
             android:id="@+id/keyboard_view"
             android:layoutDirection="ltr"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent" />
+        <include
+            android:id="@+id/custom_keyboard_layout"
+            layout="@layout/custom_keyboard_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layoutDirection="ltr"
+            android:visibility="gone" />
         <include
             android:id="@+id/emoji_palettes_view"
             layout="@layout/emoji_palettes_view"
