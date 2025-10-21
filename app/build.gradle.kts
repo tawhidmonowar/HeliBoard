@@ -6,12 +6,12 @@ plugins {
 }
 
 android {
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "helium314.keyboard"
         minSdk = 21
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 3501
         versionName = "3.5"
         ndk {
@@ -104,7 +104,7 @@ android {
 
 dependencies {
     // androidx
-    implementation("androidx.core:core-ktx:1.16.0") // 1.17 requires SDK 36
+    implementation("androidx.core:core-ktx:1.17.0") // 1.17 requires SDK 36
     implementation("androidx.recyclerview:recyclerview:1.4.0")
     implementation("androidx.autofill:autofill:1.3.0")
     implementation("androidx.viewpager2:viewpager2:1.1.0")
@@ -114,19 +114,19 @@ dependencies {
 
     // compose
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
-    implementation(platform("androidx.compose:compose-bom:2025.08.00"))
+    implementation(platform("androidx.compose:compose-bom:2025.10.00"))
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.ui:ui-tooling-preview")
     debugImplementation("androidx.compose.ui:ui-tooling")
-    implementation("androidx.navigation:navigation-compose:2.9.3")
-    implementation("sh.calvin.reorderable:reorderable:2.4.3") // for easier re-ordering
+    implementation("androidx.navigation:navigation-compose:2.9.5")
+    implementation("sh.calvin.reorderable:reorderable:3.0.0") // for easier re-ordering
     implementation("com.github.skydoves:colorpicker-compose:1.1.2") // for user-defined colors
 
     // test
     testImplementation(kotlin("test"))
     testImplementation("junit:junit:4.13.2")
-    testImplementation("org.mockito:mockito-core:5.17.0")
-    testImplementation("org.robolectric:robolectric:4.14.1")
-    testImplementation("androidx.test:runner:1.6.2")
-    testImplementation("androidx.test:core:1.6.1")
+    testImplementation("org.mockito:mockito-core:5.20.0")
+    testImplementation("org.robolectric:robolectric:4.16")
+    testImplementation("androidx.test:runner:1.7.0")
+    testImplementation("androidx.test:core:1.7.0")
 }
