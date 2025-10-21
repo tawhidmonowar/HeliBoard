@@ -1,67 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-    Copyright (C) 2011 The Android Open Source Project
-    modified
-    SPDX-License-Identifier: Apache-2.0 AND GPL-3.0-only
--->
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
 
-<merge
-    xmlns:android="http://schemas.android.com/apk/res/android">
     <LinearLayout
-        android:animateLayoutChanges="true"
-        android:id="@+id/suggestions_strip_wrapper"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
         android:hapticFeedbackEnabled="false"
+        android:orientation="vertical"
         android:soundEffectsEnabled="false">
-        <!-- Provide audio and haptic feedback by ourselves based on the keyboard settings.
-             We just need to ignore the system's audio and haptic feedback settings. -->
-        <ImageButton
-            android:id="@+id/suggestions_strip_toolbar_key"
-            android:layout_width="@dimen/config_suggestions_strip_edge_key_width"
-            android:layout_height="@dimen/config_suggestions_strip_edge_key_width"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="0"
-            android:layout_marginStart="1dp"
-            android:background="@drawable/toolbar_expand_key_background"
-            style="?attr/suggestionWordStyle"
-            android:contentDescription="@string/more_keys_strip_description" />
-        <HorizontalScrollView
-            android:id="@+id/toolbar_container"
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbarThumbHorizontal="@color/toolbar_scrollbar"
-            android:visibility="gone">
-            <LinearLayout
-                android:id="@+id/toolbar"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                style="?attr/suggestionWordStyle">
-            </LinearLayout>
-        </HorizontalScrollView>
+            android:layout_height="40dp"
+            android:animateLayoutChanges="true"
+            android:baselineAligned="false"
+            android:hapticFeedbackEnabled="false"
+            android:orientation="horizontal"
+            android:soundEffectsEnabled="false">
+
+            <ImageButton
+                android:id="@+id/suggestions_strip_numpad_key"
+                style="?attr/suggestionWordStyle"
+                android:layout_width="@dimen/config_suggestions_strip_edge_key_width"
+                android:layout_height="@dimen/config_suggestions_strip_edge_key_width"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="1dp"
+                android:layout_weight="0"
+                android:background="@drawable/g_button"
+                android:contentDescription="g button"
+                android:tag="NUMPAD" />
+
+            <ImageButton
+                style="?attr/suggestionWordStyle"
+                android:layout_width="@dimen/config_suggestions_strip_edge_key_width"
+                android:layout_height="@dimen/config_suggestions_strip_edge_key_width"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="1dp"
+                android:layout_weight="0"
+                android:background="@drawable/ai_button"
+                android:contentDescription="g button"
+                android:tag="NUMPAD" />
+
+            <ImageButton
+                style="?attr/suggestionWordStyle"
+                android:layout_width="@dimen/config_suggestions_strip_edge_key_width"
+                android:layout_height="@dimen/config_suggestions_strip_edge_key_width"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="1dp"
+                android:layout_weight="0"
+                android:background="@drawable/translate_button"
+                android:contentDescription="g button"
+                android:tag="NUMPAD" />
+
+            <ImageButton
+                style="?attr/suggestionWordStyle"
+                android:layout_width="@dimen/config_suggestions_strip_edge_key_width"
+                android:layout_height="@dimen/config_suggestions_strip_edge_key_width"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="1dp"
+                android:layout_weight="0"
+                android:background="@drawable/replay_button"
+                android:contentDescription="g button"
+                android:tag="NUMPAD" />
+
+            <ImageButton
+                style="?attr/suggestionWordStyle"
+                android:layout_width="@dimen/config_suggestions_strip_edge_key_width"
+                android:layout_height="@dimen/config_suggestions_strip_edge_key_width"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="1dp"
+                android:layout_weight="0"
+                android:background="@drawable/rep_button"
+                android:contentDescription="g button"
+                android:tag="NUMPAD" />
+
+            <ImageButton
+                style="?attr/suggestionWordStyle"
+                android:layout_width="@dimen/config_suggestions_strip_edge_key_width"
+                android:layout_height="@dimen/config_suggestions_strip_edge_key_width"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="1dp"
+                android:layout_weight="0"
+                android:tint="@color/background_amoled_black"
+                android:contentDescription="@string/more_keys_strip_description"
+                android:background="@drawable/sym_keyboard_smiley_holo"/>
+
+            <ImageButton
+                android:id="@+id/suggestions_strip_toolbar_key"
+                style="?attr/suggestionWordStyle"
+                android:layout_width="@dimen/config_suggestions_strip_edge_key_width"
+                android:layout_height="@dimen/config_suggestions_strip_edge_key_width"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="1dp"
+                android:layout_weight="0"
+                android:contentDescription="@string/more_keys_strip_description" />
+
+            <ImageButton
+                style="?attr/suggestionWordStyle"
+                android:layout_width="@dimen/config_suggestions_strip_edge_key_width"
+                android:layout_height="@dimen/config_suggestions_strip_edge_key_width"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="1dp"
+                android:padding="10.dp"
+                android:layout_weight="0"
+                android:contentDescription="@string/more_keys_strip_description"
+                android:background="@drawable/outline_mic"/>
+
+        </LinearLayout>
+
         <!-- Provide audio and haptic feedback by ourselves based on the keyboard settings.
              We just need to ignore the system's audio and haptic feedback settings. -->
-        <!-- todo: sth is fishy with that maxwidth
-               check what is going on in the layout helper? -->
+
         <LinearLayout
-            android:id="@+id/suggestions_strip"
-            android:orientation="horizontal"
-            android:maxWidth="100dp"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
+            android:id="@+id/suggestions_strip_wrapper"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:animateLayoutChanges="true"
+            android:baselineAligned="false"
             android:hapticFeedbackEnabled="false"
-            android:soundEffectsEnabled="false" />
-        <LinearLayout
-            android:id="@+id/pinned_keys"
             android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:minWidth="0dp"
-            style="?attr/suggestionWordStyle">
+            android:soundEffectsEnabled="false">
+
+            <HorizontalScrollView
+                android:id="@+id/toolbar_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbarThumbHorizontal="@color/toolbar_scrollbar"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:id="@+id/toolbar"
+                    style="?attr/suggestionWordStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"></LinearLayout>
+            </HorizontalScrollView>
+            <!-- Provide audio and haptic feedback by ourselves based on the keyboard settings.
+                 We just need to ignore the system's audio and haptic feedback settings. -->
+            <!-- todo: sth is fishy with that maxwidth
+                   check what is going on in the layout helper? -->
+            <LinearLayout
+                android:id="@+id/suggestions_strip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:hapticFeedbackEnabled="false"
+                android:maxWidth="100dp"
+                android:orientation="horizontal"
+                android:soundEffectsEnabled="false" />
+
+            <LinearLayout
+                android:id="@+id/pinned_keys"
+                style="?attr/suggestionWordStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="0dp"
+                android:orientation="horizontal" />
+
         </LinearLayout>
+
     </LinearLayout>
 </merge>

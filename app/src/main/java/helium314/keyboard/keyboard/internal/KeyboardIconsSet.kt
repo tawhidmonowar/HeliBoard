@@ -119,7 +119,7 @@ class KeyboardIconsSet private constructor() {
             NAME_STOP_ONEHANDED_KEY to          R.drawable.sym_keyboard_stop_onehanded_holo,
             NAME_SWITCH_ONEHANDED_KEY to        R.drawable.ic_arrow_left,
             NAME_RESIZE_ONEHANDED_KEY to        R.drawable.ic_arrow_horizontal,
-            NAME_TOOLBAR_KEY to                 R.drawable.ic_arrow_right,
+            NAME_TOOLBAR_KEY to                 R.drawable.outline_more_vert,
             NAME_BIN to                         R.drawable.ic_bin,
         ).apply {
             ToolbarKey.entries.forEach {
@@ -180,7 +180,7 @@ class KeyboardIconsSet private constructor() {
             NAME_STOP_ONEHANDED_KEY to          R.drawable.sym_keyboard_stop_onehanded_lxx,
             NAME_SWITCH_ONEHANDED_KEY to        R.drawable.ic_arrow_left,
             NAME_RESIZE_ONEHANDED_KEY to        R.drawable.ic_arrow_horizontal,
-            NAME_TOOLBAR_KEY to                 R.drawable.ic_arrow_right,
+            NAME_TOOLBAR_KEY to                 R.drawable.outline_more_vert,
             NAME_BIN to                         R.drawable.ic_bin,
         ).apply {
             ToolbarKey.entries.forEach {
@@ -241,7 +241,7 @@ class KeyboardIconsSet private constructor() {
             NAME_STOP_ONEHANDED_KEY to          R.drawable.sym_keyboard_stop_onehanded_rounded,
             NAME_SWITCH_ONEHANDED_KEY to        R.drawable.ic_arrow_left_rounded,
             NAME_RESIZE_ONEHANDED_KEY to        R.drawable.ic_arrow_horizontal_rounded,
-            NAME_TOOLBAR_KEY to                 R.drawable.ic_arrow_right_rounded,
+            NAME_TOOLBAR_KEY to                 R.drawable.outline_more_vert,
             NAME_BIN to                         R.drawable.ic_bin_rounded,
         ).apply {
             ToolbarKey.entries.forEach {
